@@ -1,0 +1,19 @@
+### Create new Application
+POST {{BaseUrl}}/Application/
+Content-Type: application/json
+
+{
+  "title": "New client's application {{$uuid}}"
+}
+
+### Fetch all Applications without filter
+GET {{BaseUrl}}/Application
+Accept: application/json
+
+### Fetch all Applications with filter
+GET {{BaseUrl}}/Application?titleStartsWith=New
+Accept: application/json
+
+### Fetch all Applications with filter (empty response)
+GET {{BaseUrl}}/Application?titleStartsWith=Foo
+Accept: application/json
