@@ -4,7 +4,8 @@ using Application.Domain.Repositories;
 
 namespace Application.Domain.Operations.Search;
 
-internal class SearchApplicationsOperation : IOperation<SearchApplicationsRequest, SearchApplicationResponse>
+internal class SearchApplicationsOperation 
+    : IOperation<SearchApplicationsRequest, SearchApplicationResponse>
 {
     private readonly IApplicationRepository _applicationRepository;
 
