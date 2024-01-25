@@ -1,7 +1,6 @@
 using Application.Domain.Models;
 using Application.Domain.Models.Dtos;
 using Application.Domain.Operations.Search;
-using Application.Domain.Queries;
 using Application.Domain.Repositories;
 using NSubstitute;
 
@@ -11,13 +10,13 @@ public class SearchApplicationsOperationTests
 {
     private SearchApplicationsOperation _operation;
 
-    private IApplicationRepository _applicationRepository;
+    private IDatabase _database;
     
     [SetUp]
     public void Setup()
     {
-        _applicationRepository = Substitute.For<IApplicationRepository>();
-        _operation = new SearchApplicationsOperation(_applicationRepository);
+        _database = Substitute.For<IDatabase>();
+        _operation = new SearchApplicationsOperation(_database);
     }
 
     [Test]
@@ -30,13 +29,9 @@ public class SearchApplicationsOperationTests
         await _operation.OnOperate(request);
         
         // Assert
-        await _applicationRepository
+        await _database
             .Received()
-            .ExecuteList(Arg.Is<IQuery<ApplicationDao>[]>(queries =>
-                queries.Length == 2 && 
-                queries[0].GetType() == typeof(SearchApplicationQuery) &&
-                queries[1].GetType() == typeof(PaginationQuery<ApplicationDao>)
-            ));
+            .ToListAsync(Arg.Any<IQueryable<ApplicationDao>>());
     }
 
     [Test]
@@ -46,8 +41,8 @@ public class SearchApplicationsOperationTests
         var request = SearchApplicationsRequest.FromDto(new SearchApplicationsDto());
         var result = new List<ApplicationDao>(Enumerable.Range(0, 10).Select(_ => new ApplicationDao()));
 
-        _applicationRepository
-            .ExecuteList(Arg.Any<IQuery<ApplicationDao>[]>())
+        _database
+            .ToListAsync(Arg.Any<IQueryable<ApplicationDao>>())
             .Returns(result.AsEnumerable());
         
         // Act

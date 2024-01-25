@@ -1,5 +1,6 @@
 using Application.Domain.Models;
 using Application.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Persistence.Database;
 
@@ -21,6 +22,11 @@ public class ApplicationDatabase : IDatabase
     
     public Task<int> CommitAsync(CancellationToken cancellationToken = new())
     {
-        throw new NotImplementedException();
+        return _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<T>> ToListAsync<T>(IQueryable<T> entity, CancellationToken cancellationToken = new()) where T : ApplicationDao
+    {
+        return await entity.ToListAsync(cancellationToken);
     }
 }

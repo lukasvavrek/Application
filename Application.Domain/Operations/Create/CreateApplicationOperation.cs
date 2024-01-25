@@ -20,8 +20,7 @@ internal class CreateApplicationOperation
             Title = request.Title
         };
 
-        //await _database.AddAsync(dao);
-        _database.Applications.Append(dao);
+        await _database.AddAsync(dao);
         await _database.CommitAsync();
 
         return CreateApplicationResponse.FromId(dao.Id);
