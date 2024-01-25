@@ -24,7 +24,7 @@ public class SearchApplicationsOperationTests
     {
         // Arrange
         var request = SearchApplicationsRequest.FromDto(new SearchApplicationsDto());
-        
+
         // Act
         await _operation.OnOperate(request);
         

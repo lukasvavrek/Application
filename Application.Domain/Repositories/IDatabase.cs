@@ -2,9 +2,15 @@ using Application.Domain.Models;
 
 namespace Application.Domain.Repositories;
 
+public enum TrackingOption
+{
+    WithTracking,
+    WithoutTracking
+}
+
 public interface IDatabase
 {
-    public IQueryable<ApplicationDao> Applications { get; }
+    public IQueryable<ApplicationDao> Applications(TrackingOption tracking);
 
     public Task AddAsync<T>(T entity) where T : ApplicationDao;
 

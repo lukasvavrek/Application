@@ -16,7 +16,7 @@ internal class SearchApplicationsOperation
     
     public async Task<SearchApplicationResponse> OnOperate(SearchApplicationsRequest request)
     {
-        var query = _database.Applications
+        var query = _database.Applications(TrackingOption.WithoutTracking)
             .Apply(new SearchApplicationQuery(request))
             .Apply(new PaginationQuery<ApplicationDao>(request));
 

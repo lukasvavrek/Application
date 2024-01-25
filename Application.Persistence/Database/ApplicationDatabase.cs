@@ -13,7 +13,12 @@ public class ApplicationDatabase : IDatabase
         _context = context;
     }
 
-    public IQueryable<ApplicationDao> Applications => _context.Set<ApplicationDao>();
+    public IQueryable<ApplicationDao> Applications(TrackingOption tracking)
+    {
+        return tracking == TrackingOption.WithTracking ?
+            _context.Set<ApplicationDao>().AsTracking() : 
+            _context.Set<ApplicationDao>().AsNoTracking();
+    }
 
     public async Task AddAsync<T>(T entity) where T : ApplicationDao
     {
