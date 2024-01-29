@@ -16,3 +16,12 @@ However, operations make heavy use of EFCore's principles (change tracking).
 `Application.Persistence` is implements repositories and connects the application
 to the Database of choice.
 
+
+## Important notes
+
+- when unit testing, use service-based test extensions rather than test-case-based
+  - this allows for better reusability across the different operations
+- `DbContext` should adhere to the Flyt rules (tenant based filtering)
+  - make sure that we are using appropriate configurations
+  - use `CustomerApplicationDbContext` as a base class!
+

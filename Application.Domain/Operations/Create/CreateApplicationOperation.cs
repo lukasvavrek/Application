@@ -6,11 +6,11 @@ namespace Application.Domain.Operations.Create;
 internal class CreateApplicationOperation 
     : IOperation<CreateApplicationRequest, CreateApplicationResponse>
 {
-    private readonly IApplicationRepository _applicationRepository;
+    private readonly IDatabase _database;
 
-    public CreateApplicationOperation(IApplicationRepository applicationRepository)
+    public CreateApplicationOperation(IDatabase database)
     {
-        _applicationRepository = applicationRepository;
+        _database = database;
     }
     
     public async Task<CreateApplicationResponse> OnOperate(CreateApplicationRequest request)
@@ -20,8 +20,8 @@ internal class CreateApplicationOperation
             Title = request.Title
         };
 
-        await _applicationRepository.Add(dao);
-        await _applicationRepository.SaveChangesAsync();
+        await _database.AddAsync(dao);
+        await _database.CommitAsync();
 
         return CreateApplicationResponse.FromId(dao.Id);
     }

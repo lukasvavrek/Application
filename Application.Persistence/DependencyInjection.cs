@@ -15,6 +15,7 @@ public static class DependencyInjection
         }
 
         services.AddScoped<IApplicationRepository, ApplicationRepository>();
+        services.AddScoped<IDatabase, ApplicationDatabase>();
 
         services.AddDbContext<ApplicationContext>();
     }

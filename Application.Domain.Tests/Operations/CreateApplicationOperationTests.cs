@@ -10,13 +10,13 @@ public class CreateApplicationOperationTests
 {
     private CreateApplicationOperation _operation;
 
-    private IApplicationRepository _applicationRepository;
+    private IDatabase _database;
 
     [SetUp]
     public void Setup()
     {
-        _applicationRepository = Substitute.For<IApplicationRepository>();
-        _operation = new CreateApplicationOperation(_applicationRepository);
+        _database = Substitute.For<IDatabase>();
+        _operation = new CreateApplicationOperation(_database);
     }
 
     [Test]
@@ -34,13 +34,13 @@ public class CreateApplicationOperationTests
         await _operation.OnOperate(request);
         
         // Assert
-        await _applicationRepository
+        await _database
             .Received()
-            .Add(Arg.Is<ApplicationDao>(dao => dao.Title == title));
+            .AddAsync(Arg.Is<ApplicationDao>(dao => dao.Title == title));
 
-        await _applicationRepository
+        await _database
             .Received()
-            .SaveChangesAsync();
+            .CommitAsync();
     }
 
     [Test]
@@ -54,8 +54,8 @@ public class CreateApplicationOperationTests
             Title = "test-title"
         });
 
-        await _applicationRepository
-            .Add(Arg.Do<ApplicationDao>(dao => dao.Id = applicationId));
+        await _database
+            .AddAsync(Arg.Do<ApplicationDao>(dao => dao.Id = applicationId));
         
         // Act
         var response = await _operation.OnOperate(request);
